@@ -8,7 +8,7 @@ public class Player : MonoBehaviour {
 	private PlayerAnimation _playerAnimation;
 	private SpriteRenderer _playerSpriteRenderer;
 	private bool _isPlayerflipped = false;
-	private float _jumpForce = 5.0f;
+	private float _jumpForce = 6.0f;
 	[SerializeField]
 	private float _playerSpeed = 3.0f;
 
