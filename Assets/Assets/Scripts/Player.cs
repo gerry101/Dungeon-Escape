@@ -8,7 +8,7 @@ public class Player : MonoBehaviour {
 	private PlayerAnimation _playerAnimation;
 	private SpriteRenderer _playerSpriteRenderer;
 	private bool _isPlayerflipped = false;
-	private float _jumpForce = 6.0f;
+	private float _jumpForce = 6.5f;
 	[SerializeField]
 	private float _playerSpeed = 3.0f;
 
@@ -22,7 +22,6 @@ public class Player : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		Movement();
-		GroundAttack();
 	}
 
 	// Handle movement of the player
@@ -54,10 +53,8 @@ public class Player : MonoBehaviour {
 				}
 			}
 		}
-	}
 
-	// Handle player attack functionality
-	void GroundAttack() {
+		// Handle player attack functionality
 		if(Input.GetKeyDown(KeyCode.Mouse0)) {
 			_playerAnimation.GroundAttack();
 		}
