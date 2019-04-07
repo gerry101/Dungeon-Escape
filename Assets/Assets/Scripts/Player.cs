@@ -41,10 +41,11 @@ public class Player : MonoBehaviour {
 		Debug.DrawRay(transform.position, Vector2.down * 1.0f, Color.blue);
 
 		// Handle jumping of player
-		_playerAnimation.Jump(false);
+		if(CheckPlayerGrounded()) {
+			_playerAnimation.Jump(false);
+		}
 		if(Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse1)) {
-			RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1.0f, 1 << 8);
-			if(hit.collider != null) {
+			if(CheckPlayerGrounded()) {
 				_playerRigidbody.velocity = new Vector2(_playerRigidbody.velocity.x, _jumpForce);
 				if(Input.GetKeyDown(KeyCode.Space)) {
 					_playerAnimation.Jump(true);
@@ -58,5 +59,15 @@ public class Player : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.Mouse0)) {
 			_playerAnimation.GroundAttack();
 		}
+	}
+
+	// Check if player is grounded
+	bool CheckPlayerGrounded() {
+		RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1.0f, 1 << 8);
+		if(hit.collider != null) {
+			return true;
+		}
+
+		return false;
 	}
 }
