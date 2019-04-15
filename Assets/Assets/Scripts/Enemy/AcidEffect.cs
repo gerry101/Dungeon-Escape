@@ -5,12 +5,13 @@ using UnityEngine;
 public class AcidEffect : MonoBehaviour {
 
 	private Vector3 _targetVectorDirection;
+	public bool facingRight;
 
 	// Use this for initialization
 	void Start () {
 		Destroy(gameObject, 5.0f);
 
-		if(Random.value > 0.5f) {
+		if(facingRight) {
 			_targetVectorDirection = Vector3.right;
 		} else {
 			_targetVectorDirection = Vector3.left;

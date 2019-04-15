@@ -15,6 +15,8 @@ public class Player : MonoBehaviour, IDamagable {
 	private int _health;
 	private bool _canDamage;
 
+	public int gems;
+
 	public int Health{get; set;}
 
 	// Use this for initialization

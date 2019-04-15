@@ -17,6 +17,8 @@ public class Enemy : MonoBehaviour, IDamagable {
 	protected bool facingRight;
 	[SerializeField]
 	protected Transform playerTransform;
+	[SerializeField]
+	protected GameObject _gem;
 	private bool _canDamage;
 	protected bool isAttackSelected;
 	protected bool isAttacking;
@@ -147,6 +149,11 @@ public class Enemy : MonoBehaviour, IDamagable {
 
 		if(health < 1) {
 			enemyAnimator.SetTrigger("Death");
+			GameObject intsantiatedGem = Instantiate(_gem, transform.position, Quaternion.identity);
+			Gem gem = intsantiatedGem.GetComponent<Gem>();
+			if(gem != null) {
+				gem.enemyGemCount = gems;
+			}
 		}
 	}
 

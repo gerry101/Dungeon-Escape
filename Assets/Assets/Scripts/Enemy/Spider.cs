@@ -113,11 +113,20 @@ public class Spider : Enemy {
 
 		if(health < 1) {
 			enemyAnimator.SetTrigger("Death");
+			GameObject intsantiatedGem = Instantiate(_gem, transform.position, Quaternion.identity);
+			Gem gem = intsantiatedGem.GetComponent<Gem>();
+			if(gem != null) {
+				gem.enemyGemCount = gems;
+			}
 		}
 	}
 
 	// Instantiate acid
 	public void Attack() {
-		Instantiate(_acid, transform.position, Quaternion.identity);
+		GameObject acid = Instantiate(_acid, transform.position, Quaternion.identity);
+		AcidEffect acidEffect = acid.GetComponent<AcidEffect>();
+		if(acidEffect != null) {
+			acidEffect.facingRight = facingRight;
+		}
 	}
 }
