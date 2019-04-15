@@ -30,4 +30,23 @@ public class PlayerAnimation : MonoBehaviour {
 	public void JumpAttack() {
 		_playerAnimator.SetTrigger("JumpAttack");
 	}
+
+	// Handle the hit animation
+	public void PlayerHit() {
+		_playerAnimator.SetTrigger("Hit");
+	}
+
+	// Handle the death animation
+	public void PlayerDeath() {
+		_playerAnimator.SetTrigger("Death");
+	}
+
+	// Check if player is dead
+	public bool IsPlayerDead() {
+		if(_playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Death")) {
+			return true;
+		}
+
+		return false;
+	}
 }

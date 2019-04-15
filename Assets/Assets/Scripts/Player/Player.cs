@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour {
+public class Player : MonoBehaviour, IDamagable {
 
 	private Rigidbody2D _playerRigidbody;
 	private PlayerAnimation _playerAnimation;
@@ -11,22 +11,31 @@ public class Player : MonoBehaviour {
 	private float _jumpForce = 6.5f;
 	[SerializeField]
 	private float _playerSpeed = 3.0f;
+	[SerializeField]
+	private int _health;
+	private bool _canDamage;
+
+	public int Health{get; set;}
 
 	// Use this for initialization
 	void Start () {
 		_playerRigidbody = GetComponent<Rigidbody2D>();
 		_playerAnimation = GetComponent<PlayerAnimation>();
 		_playerSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
+		Health = _health;
+		_canDamage = true;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		Movement();
+		if(!_playerAnimation.IsPlayerDead()) {
+			Movement();
+		}
 	}
 
 	// Handle movement of the player
 	void Movement() {
-		// Handle vertical movement of player
+		// Handle horizontal movement of player
 		float move = Input.GetAxisRaw("Horizontal");
 		_playerRigidbody.velocity = new Vector2(move * _playerSpeed, _playerRigidbody.velocity.y);
 		if(move == 1) {
@@ -41,9 +50,7 @@ public class Player : MonoBehaviour {
 		Debug.DrawRay(transform.position, Vector2.down * 1.0f, Color.blue);
 
 		// Handle jumping of player
-		if(CheckPlayerGrounded()) {
-			_playerAnimation.Jump(false);
-		}
+		_playerAnimation.Jump(false);
 		if(Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse1)) {
 			if(CheckPlayerGrounded()) {
 				_playerRigidbody.velocity = new Vector2(_playerRigidbody.velocity.x, _jumpForce);
@@ -69,5 +76,31 @@ public class Player : MonoBehaviour {
 		}
 
 		return false;
+	}
+
+	// Damage the player
+	public void Damage() {
+		if(_health < 1) {
+			return;
+		}
+
+		if(_canDamage) {
+			_health -= 1;
+			Health = _health;
+			_canDamage = false;
+			StartCoroutine(WaitForAttack());
+
+			_playerAnimation.PlayerHit();
+		}		
+
+		if(_health < 1) {
+			_playerAnimation.PlayerDeath();
+		}
+	}
+
+	// Prevent multiple attacks in one frame
+	IEnumerator WaitForAttack() {
+		yield return new WaitForSeconds(0.5f);
+		_canDamage = true;
 	}
 }
