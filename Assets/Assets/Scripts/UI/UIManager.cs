@@ -17,10 +17,18 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public Text playerGemCount;
+	public Image selectionImage;
 
-	public void OpenShop(int gemCount) {
+	// Update gem count text
+	public void UpdateShop(int gemCount) {
 		string updatedGemCount = gemCount.ToString() + "G";
 		playerGemCount.text = updatedGemCount;
+	}
+
+	// Update y position of selection image
+	public void UpdateSelectionImage(float width, float xPos, float yPos) {
+		selectionImage.rectTransform.sizeDelta = new Vector2(width, selectionImage.rectTransform.sizeDelta.y);
+		selectionImage.rectTransform.anchoredPosition = new Vector2(xPos, yPos);
 	}
 
 	void Awake() {
