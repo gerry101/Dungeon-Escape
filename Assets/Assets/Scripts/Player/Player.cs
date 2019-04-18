@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class Player : MonoBehaviour, IDamagable {
 
@@ -13,6 +14,7 @@ public class Player : MonoBehaviour, IDamagable {
 	private float _playerSpeed = 3.0f;
 	[SerializeField]
 	private int _health;
+	private int _maxHealth;
 	private bool _canDamage;
 
 	public int gems;
@@ -25,6 +27,7 @@ public class Player : MonoBehaviour, IDamagable {
 		_playerAnimation = GetComponent<PlayerAnimation>();
 		_playerSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
 		Health = _health;
+		_maxHealth = Health;
 		_canDamage = true;
 	}
 	
@@ -38,7 +41,7 @@ public class Player : MonoBehaviour, IDamagable {
 	// Handle movement of the player
 	void Movement() {
 		// Handle horizontal movement of player
-		float move = Input.GetAxisRaw("Horizontal");
+		float move = CrossPlatformInputManager.GetAxisRaw("Horizontal");
 		_playerRigidbody.velocity = new Vector2(move * _playerSpeed, _playerRigidbody.velocity.y);
 		if(move == 1) {
 			_isPlayerflipped = false;
@@ -53,10 +56,10 @@ public class Player : MonoBehaviour, IDamagable {
 
 		// Handle jumping of player
 		_playerAnimation.Jump(false);
-		if(Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse1)) {
+		if(CrossPlatformInputManager.GetButtonDown("B_Button") || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse1)) {
 			if(CheckPlayerGrounded()) {
 				_playerRigidbody.velocity = new Vector2(_playerRigidbody.velocity.x, _jumpForce);
-				if(Input.GetKeyDown(KeyCode.Space)) {
+				if(CrossPlatformInputManager.GetButtonDown("B_Button") || Input.GetKeyDown(KeyCode.Space)) {
 					_playerAnimation.Jump(true);
 				} else if(Input.GetKeyDown(KeyCode.Mouse1)) {
 					_playerAnimation.JumpAttack();
@@ -65,7 +68,7 @@ public class Player : MonoBehaviour, IDamagable {
 		}
 
 		// Handle player attack functionality
-		if(Input.GetKeyDown(KeyCode.Mouse0)) {
+		if(CrossPlatformInputManager.GetButtonDown("A_Button")) {
 			_playerAnimation.GroundAttack();
 		}
 	}
@@ -89,6 +92,7 @@ public class Player : MonoBehaviour, IDamagable {
 		if(_canDamage) {
 			_health -= 1;
 			Health = _health;
+			UIManager.Instance.UpdatePlayerHealthUnits(_maxHealth, _health);
 			_canDamage = false;
 			StartCoroutine(WaitForAttack());
 

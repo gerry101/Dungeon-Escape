@@ -11,6 +11,7 @@ public class Gem : MonoBehaviour {
 			Player player = other.GetComponent<Player>();
 			if(player != null) {
 				player.gems += enemyGemCount;
+				UIManager.Instance.UpdateGemCountText(player.gems);
 			}
 			Destroy(gameObject);
 		}

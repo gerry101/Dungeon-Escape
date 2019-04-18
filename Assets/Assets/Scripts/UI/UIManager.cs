@@ -18,6 +18,12 @@ public class UIManager : MonoBehaviour {
 
 	public Text playerGemCount;
 	public Image selectionImage;
+	public Text gemCountText;
+	public Image[] healthUnits;
+
+	void Awake() {
+		_instance = this;
+	}
 
 	// Update gem count text
 	public void UpdateShop(int gemCount) {
@@ -31,7 +37,34 @@ public class UIManager : MonoBehaviour {
 		selectionImage.rectTransform.anchoredPosition = new Vector2(xPos, yPos);
 	}
 
-	void Awake() {
-		_instance = this;
+	// Update gem count text
+	public void UpdateGemCountText(int updatedPlayerGemCount) {
+		gemCountText.text = updatedPlayerGemCount.ToString();
+	}
+
+	public void UpdatePlayerHealthUnits(int maxHealth, int currentHealth) {
+		if(currentHealth <= maxHealth * 0.25) {
+			healthUnits[1].enabled = false;
+		} else {
+			healthUnits[1].enabled = true;
+		}
+
+		if(currentHealth <= maxHealth * 0.5) {
+			healthUnits[2].enabled = false;
+		} else {
+			healthUnits[2].enabled = true;
+		}
+
+		if(currentHealth <= maxHealth * 0.75) {
+			healthUnits[3].enabled = false;
+		} else {
+			healthUnits[3].enabled = true;
+		}
+
+		if(currentHealth <= 0) {
+			healthUnits[0].enabled = false;
+		} else {
+			healthUnits[0].enabled = true;
+		}
 	}
 }
