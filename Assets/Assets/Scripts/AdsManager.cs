@@ -25,6 +25,7 @@ public class AdsManager : MonoBehaviour {
 				Player playerScript = player.GetComponent<Player>();
 				if(playerScript != null) {
 					playerScript.gems += 100;
+					UIManager.Instance.UpdateShop(playerScript.gems);
 				}
 				break;
 			case ShowResult.Skipped:
