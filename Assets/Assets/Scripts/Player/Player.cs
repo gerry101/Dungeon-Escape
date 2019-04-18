@@ -41,7 +41,7 @@ public class Player : MonoBehaviour, IDamagable {
 	// Handle movement of the player
 	void Movement() {
 		// Handle horizontal movement of player
-		float move = CrossPlatformInputManager.GetAxisRaw("Horizontal");
+		float move = Input.GetAxisRaw("Horizontal");
 		_playerRigidbody.velocity = new Vector2(move * _playerSpeed, _playerRigidbody.velocity.y);
 		if(move == 1) {
 			_isPlayerflipped = false;
